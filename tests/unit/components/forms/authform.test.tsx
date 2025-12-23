@@ -154,7 +154,7 @@ describe("AuthForm Components", () => {
       });
 
       describe("Error Handling", () => {
-        it("should show success toast and redirect to home", async () => {
+        it("should show error toast and redirect to home", async () => {
           const onSubmit = jest.fn().mockResolvedValue({
             success: false,
             status: 401,
