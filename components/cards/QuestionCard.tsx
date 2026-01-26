@@ -166,11 +166,11 @@ const QuestionCard = ({
         {(patientAge || gender) && (
           <div className="body-medium text-dark400_light700 flex items-center gap-1 rounded-md bg-light-800 px-3 py-1 dark:bg-dark-400">
             <span className="text-primary-500">🏥 Patient:</span>
-            <span className="font-semibold text-dark200_light900">
+            <span className="text-dark200_light900 font-semibold">
               {patientAge ? `${patientAge}yo` : "Age N/A"}
             </span>
             <span className="text-light-400">•</span>
-            <span className="font-semibold text-dark200_light900">
+            <span className="text-dark200_light900 font-semibold">
               {gender || "Unknown"}
             </span>
           </div>
