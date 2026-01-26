@@ -127,7 +127,9 @@ describe("QuestionCard Component", () => {
       expect(timestampFlex).toBeVisible();
 
       // Check metrics visibility
-      expect(screen.getByText(/asked 4 months ago/)).toBeVisible();
+      expect(
+        screen.getByText(new RegExp(`• asked ${relativeTimeText}`))
+      ).toBeVisible();
       expect(screen.getByText(/10/)).toBeVisible();
     });
   });
