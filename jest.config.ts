@@ -8,9 +8,45 @@ const createJestConfig = nextJest({
 
 // Add any custom config to be passed to Jest
 const config: Config = {
+  verbose: true,
+  projects: [
+    {
+      displayName: "client",
+      clearMocks: true,
+      testEnvironment: "jsdom",
+      testMatch: [
+        "**/tests/unit/**/*.+(test|spec).[jt]s?(x)",
+        "**/tests/integration/**/*.client.+(test|spec).[jt]s?(x)",
+        "**/*.client.+(test|spec).[jt]s?(x)",
+      ],
+      testPathIgnorePatterns: [".*\\.server\\.(test|spec)\\.[jt]s?(x)$"],
+      moduleNameMapper: {
+        "^@/(.*)$": "<rootDir>/$1",
+      },
+      setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+      transform: {
+        "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
+      },
+    },
+    {
+      displayName: "server",
+      clearMocks: true,
+      testEnvironment: "node",
+      testMatch: [
+        "**/*tests/integration/**/*.server.+(test|spec).[jt]s?(x)",
+        "**/*.server.+(test|spec).[jt]s?(x)",
+      ],
+      testPathIgnorePatterns: [".*\\.client\\.(test|spec)\\.[jt]s?(x)$"],
+      moduleNameMapper: {
+        "^@/(.*)$": "<rootDir>/$1",
+      },
+      setupFilesAfterEnv: ["<rootDir>/jest.server.setup.ts"],
+      transform: {
+        "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
+      },
+    },
+  ],
   coverageProvider: "v8",
-  testEnvironment: "jsdom",
-  clearMocks: true,
   collectCoverage: true,
   coverageDirectory: "coverage",
   collectCoverageFrom: [
@@ -34,11 +70,6 @@ const config: Config = {
     // "!**/public/**",
     // "!**/app/layout.tsx",
   ],
-
-  moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/$1",
-  },
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
