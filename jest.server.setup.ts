@@ -1,4 +1,4 @@
-import "@testing-library/jest-dom";
+// import "@testing-library/jest-dom";
 import {
   connectDB,
   clearDB,
@@ -6,6 +6,9 @@ import {
   isDBConnected,
 } from "./tests/config/db-integration";
 
+jest.mock("@/auth", () => ({
+  auth: jest.fn(() => Promise.resolve({ user: null })),
+}));
 beforeAll(async () => {
   await connectDB();
 }, 30000);
@@ -16,6 +19,10 @@ beforeEach(async () => {
 
 afterAll(async () => {
   await disconnectDB();
+});
+
+afterEach(async () => {
+  await clearDB();
 });
 
 process.on("SIGINT", async () => {

@@ -24,8 +24,18 @@ const config: Config = {
         "^@/(.*)$": "<rootDir>/$1",
       },
       setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+      // transform: {
+      //   "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
+      // },
       transform: {
-        "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
+        "^.+\\.(js|jsx|ts|tsx|mjs)$": [
+          "babel-jest",
+          {
+            presets: [
+              ["next/babel", { "preset-react": { runtime: "automatic" } }],
+            ],
+          },
+        ],
       },
     },
     {
@@ -41,8 +51,20 @@ const config: Config = {
         "^@/(.*)$": "<rootDir>/$1",
       },
       setupFilesAfterEnv: ["<rootDir>/jest.server.setup.ts"],
+      // transform: {
+      //   "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
+      // },
+      transformIgnorePatterns: ["node_modules/(?!(mongoose|mongodb|bson)/)"],
+
       transform: {
-        "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
+        "^.+\\.(js|jsx|ts|tsx|mjs)$": [
+          "babel-jest",
+          {
+            presets: [
+              ["next/babel", { "preset-react": { runtime: "automatic" } }],
+            ],
+          },
+        ],
       },
     },
   ],
