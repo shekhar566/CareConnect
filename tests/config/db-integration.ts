@@ -49,7 +49,7 @@ export async function disconnectDB(): Promise<void> {
 }
 
 export async function clearDB(): Promise<void> {
-  if (isConnected) {
+  if (!isConnected) {
     throw new Error("Database not connected");
   }
 
