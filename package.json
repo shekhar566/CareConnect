@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.19",
+    "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.0.1",
     "@mdxeditor/editor": "^3.42.0",
     "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -43,6 +44,7 @@
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-tailwindcss": "^3.18.0",
+    "gsap": "^3.14.2",
     "init": "^0.1.2",
     "lucide-react": "^0.511.0",
     "mongoose": "^8.16.1",
