@@ -25,7 +25,10 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthForm from "@/components/forms/AuthForm";
 import { SignInSchema } from "@/lib/validations";
-import { signInWithCredentials } from "@/lib/actions/auth.action";
+import {
+  signInAsGuest,
+  signInWithCredentials,
+} from "@/lib/actions/auth.action";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { toast } from "@/hooks/use-toast";
@@ -37,11 +40,7 @@ const SignIn = () => {
   const handleGuestLogin = async () => {
     setIsGuestLoading(true);
     try {
-      // ⚡️ HARDCODED CREDENTIALS (Make sure this user exists in DB!)
-      const result = await signInWithCredentials({
-        email: "guest@careconnect.com",
-        password: "Guest123!",
-      });
+      const result = await signInAsGuest();
 
       if (result?.success) {
         toast({

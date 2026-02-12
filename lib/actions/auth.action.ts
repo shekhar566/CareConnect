@@ -109,3 +109,19 @@ export async function signInWithCredentials(
     return handleError(error) as ErrorResponse;
   }
 }
+
+export async function signInAsGuest() {
+  try {
+    // 🔐 The credentials live HERE now.
+    // The client browser never receives "Guest123!"
+    // It only receives the result of the login.
+
+    return await signInWithCredentials({
+      email: "guest@careconnect.com",
+      password: "Guest123!",
+    });
+  } catch (error) {
+    console.error("Guest login failed:", error);
+    return { success: false, error: { message: "Guest login failed" } };
+  }
+}
