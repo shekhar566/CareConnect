@@ -106,14 +106,13 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useRef } from "react";
+import gsap from "gsap";
 import ROUTES from "@/constants/routes";
 import { Badge } from "../ui/badge";
-// import { getTechDescription } from "@/lib/utils"; // removed getDeviconClassName
 import Image from "next/image";
 import { techMap } from "@/constants/techMap";
 import { cn, getTechDescription } from "@/lib/utils";
-// import { cn } from "@/lib/utils"; // We need this to merge colors properly
 
 interface Props {
   _id: string;
@@ -136,23 +135,48 @@ const TagCard = ({
   isButton,
   handleRemove,
 }: Props) => {
+  const badgeRef = useRef<HTMLDivElement>(null);
   const description = getTechDescription(name);
 
-  // Logic: Get color from map -> OR use a clean default (Gray/Slate)
   const colorClass =
     techMap[name.toLowerCase()] ||
     "text-slate-600 bg-slate-100 border-slate-200 dark:text-slate-300 dark:bg-slate-800 dark:border-slate-700";
 
   const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+    if (isButton) {
+      e.preventDefault();
+    }
+  };
+
+  const handleMouseEnter = () => {
+    gsap.to(badgeRef.current, {
+      y: -2,
+      scale: 1.02,
+      duration: 0.2,
+      ease: "power2.out",
+    });
+  };
+
+  const handleMouseLeave = () => {
+    gsap.to(badgeRef.current, {
+      y: 0,
+      scale: 1,
+      duration: 0.2,
+      ease: "power2.in",
+    });
   };
 
   const Content = (
-    <>
+    <div
+      ref={badgeRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="inline-block"
+    >
       <Badge
         className={cn(
-          "subtle-medium rounded-md px-4 py-2 uppercase flex flex-row gap-2 shadow-none border", // Base styles
-          colorClass // Our custom colors (will override defaults)
+          "subtle-medium rounded-md px-4 py-2 uppercase flex flex-row gap-2 shadow-none border transition-none", // transition-none avoids conflicts with GSAP
+          colorClass
         )}
       >
         <div className="flex-center space-x-2">
@@ -161,40 +185,47 @@ const TagCard = ({
 
         {remove && (
           <Image
-            src="/icons/close.svg" // ✅ FIXED PATH (was /assets/icons/...)
+            src="/icons/close.svg"
             width={12}
             height={12}
             alt="close icon"
             className="cursor-pointer object-contain opacity-50 invert-0 hover:opacity-100 dark:invert"
-            onClick={handleRemove}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleRemove?.();
+            }}
           />
         )}
       </Badge>
-
-      {showCount && (
-        <p className="small-medium text-dark500_light700">{questions}</p>
-      )}
-    </>
+    </div>
   );
 
   if (compact) {
     return isButton ? (
-      <button onClick={handleClick} className="flex justify-between gap-2">
+      <button
+        onClick={handleClick}
+        className="flex justify-between gap-2 outline-none"
+      >
         {Content}
+        {showCount && (
+          <p className="small-medium text-dark500_light700">{questions}</p>
+        )}
       </button>
     ) : (
       <Link href={ROUTES.TAG(_id)} className="flex justify-between gap-2">
         {Content}
+        {showCount && (
+          <p className="small-medium text-dark500_light700">{questions}</p>
+        )}
       </Link>
     );
   }
 
-  // BIG CARD VIEW (For the /tags page)
   return (
     <Link href={ROUTES.TAG(_id)} className="shadow-light100_darknone">
       <article className="background-light900_dark200 light-border flex w-full flex-col rounded-2xl border px-8 py-10 sm:w-[260px]">
         <div className="flex items-center justify-between gap-3">
-          {/* Apply the color class here too using cn() */}
           <div className={cn("rounded-sm px-5 py-1.5 border", colorClass)}>
             <p className="paragraph-semibold">{name}</p>
           </div>
