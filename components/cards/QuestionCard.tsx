@@ -88,11 +88,13 @@
 // };
 
 // export default QuestionCard;
+"use client";
 
 import ROUTES from "@/constants/routes";
 import { getTimeStamp } from "@/lib/utils";
 import Link from "next/link";
-import React from "react";
+import React, { useRef } from "react";
+import gsap from "gsap";
 import TagCard from "./TagCard";
 import Metric from "@/components/Metric";
 import EditDeleteAction from "../user/EditDeleteAction";
@@ -102,7 +104,6 @@ interface Props {
   showActionBtns?: boolean;
 }
 
-// 1. HELPER: Urgency Colors
 const getUrgencyStyle = (urgency: string) => {
   switch (urgency) {
     case "Critical":
@@ -126,15 +127,38 @@ const QuestionCard = ({
     upvotes,
     answers,
     views,
-    // NEW MEDICAL FIELDS (Destructured from question)
     patientAge,
     gender,
     urgency,
   },
   showActionBtns = false,
 }: Props) => {
+  const cardRef = useRef(null);
+
+  // Subtle Lift Effect
+  const handleMouseEnter = () => {
+    gsap.to(cardRef.current, {
+      y: -4,
+      duration: 0.3,
+      ease: "power2.out",
+    });
+  };
+
+  const handleMouseLeave = () => {
+    gsap.to(cardRef.current, {
+      y: 0,
+      duration: 0.3,
+      ease: "power2.in",
+    });
+  };
+
   return (
-    <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
+    <div
+      ref={cardRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="card-wrapper rounded-[10px] p-9 transition-shadow duration-300 hover:shadow-md sm:px-11"
+    >
       <div className="flex flex-col-reverse items-center justify-between gap-5 sm:flex-row">
         <div className="flex-1">
           <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
@@ -151,13 +175,11 @@ const QuestionCard = ({
         {showActionBtns && <EditDeleteAction type="Question" itemId={_id} />}
       </div>
 
-      {/* 2. MEDICAL INFO SECTION (New) */}
+      {/* MEDICAL INFO SECTION */}
       <div className="mt-3.5 flex flex-wrap items-center gap-3">
         {urgency && (
           <div
-            className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${getUrgencyStyle(
-              urgency
-            )}`}
+            className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${getUrgencyStyle(urgency)}`}
           >
             {urgency} Priority
           </div>
@@ -176,7 +198,6 @@ const QuestionCard = ({
           </div>
         )}
       </div>
-      {/* --------------------------- */}
 
       <div className="mt-3.5 flex w-full flex-wrap gap-2">
         {tags.map((tag: Tag) => (
@@ -203,7 +224,6 @@ const QuestionCard = ({
             title=" Votes"
             textStyles="small-medium text-dark400_light800"
           />
-
           <Metric
             imgUrl="/icons/message.svg"
             alt="answers"
@@ -211,7 +231,6 @@ const QuestionCard = ({
             title=" Answers"
             textStyles="small-medium text-dark400_light800"
           />
-
           <Metric
             imgUrl="/icons/eye.svg"
             alt="views"
