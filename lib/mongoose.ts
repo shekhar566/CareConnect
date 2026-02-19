@@ -32,7 +32,7 @@ const dbConnect = async (): Promise<Mongoose> => {
   if (!cached.promise) {
     cached.promise = mongoose
       .connect(MONGODB_URI, {
-        dbName: "careconnect",
+        dbName: "devflow",
       })
       .then((result) => {
         logger.info("connected to MongoDB");
