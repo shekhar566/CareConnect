@@ -9,7 +9,6 @@ const HomeAnimation = ({ children }: { children: React.ReactNode }) => {
 
   useGSAP(
     () => {
-      // Finds anything with class "animate-in"
       gsap.from(".animate-in", {
         y: 20,
         opacity: 0,

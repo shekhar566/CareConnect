@@ -1,206 +1,3 @@
-// "use client";
-
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { useForm } from "react-hook-form";
-// import { z } from "zod";
-// import { Button } from "@/components/ui/button";
-// import { ReloadIcon } from "@radix-ui/react-icons";
-
-// import {
-//   Form,
-//   FormControl,
-//   FormField,
-//   FormItem,
-//   FormMessage,
-// } from "@/components/ui/form";
-// import { AnswerSchema } from "@/lib/validations";
-// import { useRef, useState, useTransition } from "react";
-// // import Editor from "../editor";
-// import { MDXEditorMethods } from "@mdxeditor/editor";
-// import dynamic from "next/dynamic";
-// import Image from "next/image";
-// import { createAnswer } from "@/lib/actions/answer.action";
-// import { toast } from "@/hooks/use-toast";
-// import { useSession } from "next-auth/react";
-// import { api } from "@/lib/api";
-
-// const Editor = dynamic(() => import("@/components/editor"), {
-//   // Make sure we turn SSR off
-//   ssr: false,
-// });
-
-// interface Props {
-//   questionId: string;
-//   questionTitle: string;
-//   questionContent: string;
-// }
-
-// const AnswerForm = ({ questionId, questionTitle, questionContent }: Props) => {
-//   const [isAnswering, startAnsweringTrasition] = useTransition();
-//   const [isAISubmitting, setIsAISubmitting] = useState(false);
-//   const session = useSession();
-
-//   const editorRef = useRef<MDXEditorMethods>(null);
-//   const form = useForm<z.infer<typeof AnswerSchema>>({
-//     resolver: zodResolver(AnswerSchema),
-//     defaultValues: { content: "" },
-//   });
-
-//   const handleSubmit = async (values: z.infer<typeof AnswerSchema>) => {
-//     startAnsweringTrasition(async () => {
-//       const result = await createAnswer({
-//         questionId,
-//         content: values.content,
-//       });
-
-//       if (result.success) {
-//         form.reset();
-
-//         toast({
-//           title: "Success",
-//           description: "Your answer has been posted successfully",
-//         });
-
-//         if (editorRef.current) {
-//           editorRef.current.setMarkdown("");
-//         }
-//       } else {
-//         toast({
-//           title: "Error",
-//           description: result.error?.message,
-//           variant: "destructive",
-//         });
-//       }
-//     });
-//   };
-
-//   const generateAIAnswer = async () => {
-//     if (session.status !== "authenticated") {
-//       return toast({
-//         title: "Please log in",
-//         description: "You need to be logged in to use this feature",
-//       });
-//     }
-
-//     setIsAISubmitting(true);
-
-//     const userAnswer = editorRef.current?.getMarkdown();
-//     try {
-//       const { success, data, error } = await api.ai.getAnswer(
-//         questionTitle,
-//         questionContent,
-//         userAnswer
-//       );
-
-//       if (!success) {
-//         return toast({
-//           title: "Error",
-//           description: error?.message,
-//           variant: "destructive",
-//         });
-//       }
-//       const formattedAnswer = data.replace(/<br>/g, " ").toString().trim();
-
-//       if (editorRef.current) {
-//         editorRef.current.setMarkdown(formattedAnswer);
-
-//         form.setValue("content", formattedAnswer);
-//         form.trigger("content");
-//       }
-
-//       toast({
-//         title: "Success",
-//         description: "AI generated answer has been generated",
-//       });
-//     } catch (error) {
-//       toast({
-//         title: "Error",
-//         description:
-//           error instanceof Error
-//             ? error.message
-//             : "There was a problem with your request",
-//         variant: "destructive",
-//       });
-//     } finally {
-//       setIsAISubmitting(false);
-//     }
-//   };
-//   return (
-//     <div>
-//       <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
-//         <h4 className="paragraph-semibold text-dark400_light800">
-//           Write your answer here
-//         </h4>
-//         <Button
-//           className="btn light-border-2 gap-1.5 rounded-md border px-4 py-2.5 text-primary-500 shadow-none dark:text-primary-500"
-//           disabled={isAISubmitting}
-//           onClick={generateAIAnswer}
-//         >
-//           {isAISubmitting ? (
-//             <>
-//               <ReloadIcon className="mr-2 size-4 animate-spin" />
-//               Generating...
-//             </>
-//           ) : (
-//             <>
-//               <Image
-//                 src="/icons/stars.svg"
-//                 alt="Generate AI Answer"
-//                 width={25}
-//                 height={30}
-//                 className="object-contain"
-//               />
-//               Generate AI Answer
-//             </>
-//           )}
-//         </Button>
-//       </div>
-//       <Form {...form}>
-//         <form
-//           onSubmit={form.handleSubmit(handleSubmit)}
-//           className="mt-6 flex w-full flex-col gap-10"
-//         >
-//           <FormField
-//             control={form.control}
-//             name="content"
-//             render={({ field }) => (
-//               <FormItem className="flex w-full flex-col gap-3">
-//                 <FormControl className="mt-3.5">
-//                   <Editor
-//                     value={field.value}
-//                     editorRef={editorRef}
-//                     fieldChange={field.onChange}
-//                   />
-//                 </FormControl>
-//                 <FormMessage />
-//               </FormItem>
-//             )}
-//           />
-
-//           <div className="flex justify-end">
-//             <Button
-//               type="submit"
-//               className="primary-gradient w-fit"
-//               disabled={isAnswering}
-//             >
-//               {isAnswering ? (
-//                 <>
-//                   <ReloadIcon className="mr-2 size-4 animate-spin" />
-//                   Posting...
-//                 </>
-//               ) : (
-//                 "Post Answer"
-//               )}
-//             </Button>
-//           </div>
-//         </form>
-//       </Form>
-//     </div>
-//   );
-// };
-
-// export default AnswerForm;
-
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -218,7 +15,6 @@ import {
 } from "@/components/ui/form";
 import { AnswerSchema } from "@/lib/validations";
 import { useRef, useState, useTransition } from "react";
-// import Editor from "../editor";
 import { MDXEditorMethods } from "@mdxeditor/editor";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -227,7 +23,6 @@ import { toast } from "@/hooks/use-toast";
 import { useSession } from "next-auth/react";
 import { api } from "@/lib/api";
 
-// 👇 GSAP IMPORTS
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -248,11 +43,9 @@ const AnswerForm = ({ questionId, questionTitle, questionContent }: Props) => {
 
   const editorRef = useRef<MDXEditorMethods>(null);
 
-  // 👇 ANIMATION REFS
   const aiButtonRef = useRef<HTMLButtonElement>(null);
   const starsRef = useRef<HTMLDivElement>(null);
 
-  // 👇 GSAP CONTEXT
   const { contextSafe } = useGSAP({ scope: aiButtonRef });
 
   const form = useForm<z.infer<typeof AnswerSchema>>({
@@ -260,20 +53,17 @@ const AnswerForm = ({ questionId, questionTitle, questionContent }: Props) => {
     defaultValues: { content: "" },
   });
 
-  // 🎬 UPDATED ANIMATION: "Twinkle & Glow" (No Spinning)
   const handleMouseEnter = contextSafe(() => {
     if (!isAISubmitting) {
-      // 1. The Stars: Pulse & Glow
       gsap.to(starsRef.current, {
-        scale: 1.2, // Grow slightly
-        filter: "drop-shadow(0 0 5px rgba(168, 85, 247, 0.6))", // Purple AI Glow
+        scale: 1.2,
+        filter: "drop-shadow(0 0 5px rgba(168, 85, 247, 0.6))",
         duration: 0.4,
-        yoyo: true, // Pulse in and out
-        repeat: -1, // Keep glowing while hovering
+        yoyo: true,
+        repeat: -1,
         ease: "sine.inOut",
       });
 
-      // 2. The Button: Subtle Lift
       gsap.to(aiButtonRef.current, {
         y: -2,
         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
@@ -284,14 +74,12 @@ const AnswerForm = ({ questionId, questionTitle, questionContent }: Props) => {
 
   const handleMouseLeave = contextSafe(() => {
     if (!isAISubmitting) {
-      // Reset Stars
       gsap.to(starsRef.current, {
         scale: 1,
-        filter: "drop-shadow(0 0 0px rgba(0,0,0,0))", // Remove glow
+        filter: "drop-shadow(0 0 0px rgba(0,0,0,0))",
         duration: 0.3,
       });
 
-      // Reset Button
       gsap.to(aiButtonRef.current, {
         y: 0,
         boxShadow: "none",
@@ -300,24 +88,21 @@ const AnswerForm = ({ questionId, questionTitle, questionContent }: Props) => {
     }
   });
 
-  // 🎬 ANIMATION: The "Thinking" Pulse (Runs when isAISubmitting changes)
   useGSAP(() => {
     if (isAISubmitting) {
-      // Start Breathing
       gsap.to(aiButtonRef.current, {
         opacity: 0.7,
         scale: 0.98,
         duration: 0.8,
-        repeat: -1, // Infinite loop
-        yoyo: true, // Go back and forth
+        repeat: -1,
+        yoyo: true,
         ease: "power1.inOut",
       });
     } else {
-      // Stop Breathing & Reset
       gsap.killTweensOf(aiButtonRef.current);
       gsap.to(aiButtonRef.current, { opacity: 1, scale: 1, duration: 0.3 });
     }
-  }, [isAISubmitting]); // Dependency ensures it triggers on state change
+  }, [isAISubmitting]);
 
   const handleSubmit = async (values: z.infer<typeof AnswerSchema>) => {
     startAnsweringTrasition(async () => {
@@ -353,7 +138,7 @@ const AnswerForm = ({ questionId, questionTitle, questionContent }: Props) => {
       });
     }
 
-    setIsAISubmitting(true); // 👈 This triggers the GSAP Pulse
+    setIsAISubmitting(true);
 
     const userAnswer = editorRef.current?.getMarkdown();
     try {
@@ -392,7 +177,7 @@ const AnswerForm = ({ questionId, questionTitle, questionContent }: Props) => {
         variant: "destructive",
       });
     } finally {
-      setIsAISubmitting(false); // 👈 Stops the Pulse
+      setIsAISubmitting(false);
     }
   };
 
@@ -403,14 +188,13 @@ const AnswerForm = ({ questionId, questionTitle, questionContent }: Props) => {
           Write your answer here
         </h4>
 
-        {/* 👇 ANIMATED BUTTON */}
         <Button
-          ref={aiButtonRef} // Attach Ref
+          ref={aiButtonRef}
           className="btn light-border-2 gap-1.5 rounded-md border px-4 py-2.5 text-primary-500 shadow-none transition-all dark:text-primary-500" // Added transition-all
           disabled={isAISubmitting}
           onClick={generateAIAnswer}
-          onMouseEnter={handleMouseEnter} // Attach Hover
-          onMouseLeave={handleMouseLeave} // Attach Leave
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           {isAISubmitting ? (
             <>
@@ -419,7 +203,6 @@ const AnswerForm = ({ questionId, questionTitle, questionContent }: Props) => {
             </>
           ) : (
             <>
-              {/* Wrapped Image in div for rotation ref */}
               <div ref={starsRef} className="flex-center">
                 <Image
                   src="/icons/stars.svg"
