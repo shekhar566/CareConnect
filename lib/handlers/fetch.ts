@@ -20,7 +20,7 @@ export async function fetchHandler<T>(
   } = options;
 
   const controller = new AbortController();
-  const id = setTimeout(() => controller.abort, timeout);
+  const id = setTimeout(() => controller.abort(), timeout);
 
   const defaultHeaders: HeadersInit = {
     "Content-Type": "application/json",
