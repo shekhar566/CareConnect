@@ -19,6 +19,7 @@
     "test:coverage:integration": "jest --coverage --selectProjects server"
   },
   "dependencies": {
+    "@ai-sdk/groq": "^3.0.31",
     "@ai-sdk/openai": "^2.0.19",
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.0.1",
@@ -32,7 +33,7 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
     "@radix-ui/react-toast": "^1.2.14",
-    "ai": "^5.0.22",
+    "ai": "^6.0.141",
     "bcryptjs": "^3.0.2",
     "bright": "^1.0.0",
     "class-variance-authority": "^0.7.1",
