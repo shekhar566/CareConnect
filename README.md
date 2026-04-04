@@ -33,15 +33,6 @@
   <img src="https://img.shields.io/badge/GSAP-Animations-88CE02?style=for-the-badge&logo=greensock&logoColor=white" />
 </div>
 
-<br />
-
-<div align="center">
-  <i>[Insert GIF of the AI Streaming UI generating a diagnosis here]</i>
-  <br />
-  <i>[Insert GIF of the Debounced Search working here]</i>
-</div>
-
-<br />
 
 > **Note:** CareConnect is a pivot from a standard Q&A forum to a specialized medical tool. It introduces domain-specific schemas like **Urgency Levels**, **Patient Demographics**, and **Differential Diagnosis AI**.
 
