@@ -17,9 +17,9 @@
   <p align="center">
     <a href="https://care-connect-shekhar.vercel.app">View Live Demo</a>
     ·
-    <a href="https://github.com/shekhar566/care-connect/issues">Report Bug</a>
+    <a href="https://github.com/shekhar566/CareConnect/issues">Report Bug</a>
     ·
-    <a href="https://github.com/shekhar566/care-connect/pulls">Request Feature</a>
+    <a href="https://github.com/shekhar566/CareConnect/pulls">Request Feature</a>
   </p>
 </div>
 
@@ -114,8 +114,8 @@ Ensure you have the following installed:
 1. **Clone the repository**
  
    ```bash
-   git clone [https://github.com/shekhar566/care-connect.git](https://github.com/shekhar566/care-connect.git)
-   cd care-connect
+   git clone [https://github.com/shekhar566/CareConnect.git](https://github.com/shekhar566/CareConnect.git)
+   cd CareConnect
 
    Install dependencies
 
