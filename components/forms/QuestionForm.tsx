@@ -32,7 +32,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"; // Ensure you have this component
+} from "@/components/ui/select";
 
 const Editor = dynamic(() => import("@/components/editor"), {
   ssr: false,

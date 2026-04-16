@@ -18,12 +18,6 @@ declare global {
   var mongoose: MongooseCache;
 }
 
-// let cached = global.mongoose;
-
-// if (!cached) {
-//   cached = global.mongoose = { conn: null, promise: null };
-// }
-// Use 'globalThis' which is 100% safe across all Next.js runtimes!
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let cached = (globalThis as any).mongoose;
 
