@@ -4,13 +4,12 @@ import { JobFilterParams } from "@/lib/actions/shared.types";
 
 export const fetchLocation = async () => {
   try {
-    // FIXED: Use HTTPS (ipapi.co) to prevent Mixed Content errors on Vercel
     const response = await fetch("https://ipapi.co/json/");
     const location = await response.json();
     return location.country_name;
   } catch (error) {
     console.error("Error fetching location", error);
-    return "United States"; // Fallback
+    return "United States";
   }
 };
 
@@ -28,7 +27,6 @@ export const fetchCountries = async () => {
 export const fetchJobs = async (filters: JobFilterParams) => {
   const { query, page } = filters;
 
-  // MEDICAL PIVOT:
   const searchTerm = query || "Physician Medical Doctor Nurse Hospital";
 
   const headers = {

@@ -112,10 +112,6 @@ export async function signInWithCredentials(
 
 export async function signInAsGuest() {
   try {
-    // 🔐 The credentials live HERE now.
-    // The client browser never receives "Guest123!"
-    // It only receives the result of the login.
-
     return await signInWithCredentials({
       email: "guest@careconnect.com",
       password: "Guest123!",

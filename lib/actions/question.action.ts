@@ -35,7 +35,6 @@ export async function createQuestion(
     return handleError(validationResult) as ErrorResponse;
   }
 
-  // UPDATED: Extract new medical fields
   const { title, content, tags, patientAge, gender, urgency } =
     validationResult.params!;
 
@@ -45,7 +44,6 @@ export async function createQuestion(
   session.startTransaction();
 
   try {
-    // UPDATED: Pass new fields to database creation
     const [question] = await Question.create(
       [
         {
@@ -91,7 +89,6 @@ export async function createQuestion(
       { session }
     );
 
-    // log the interaction
     after(async () => {
       await createInteraction({
         action: "post",
@@ -125,7 +122,6 @@ export async function editQuestion(
     return handleError(validationResult) as ErrorResponse;
   }
 
-  // UPDATED: Extract new medical fields
   const { title, content, tags, questionId, patientAge, gender, urgency } =
     validationResult.params!;
 
@@ -142,7 +138,6 @@ export async function editQuestion(
       throw new Error("You are not authorized to edit this case");
     }
 
-    // UPDATED: Check for changes in medical fields and update
     if (
       question.title !== title ||
       question.content !== content ||
@@ -159,7 +154,6 @@ export async function editQuestion(
       await question.save({ session });
     }
 
-    // Determine tags to add and remove
     const tagsToAdd = tags.filter(
       (tag) =>
         !question.tags.some(
@@ -172,7 +166,6 @@ export async function editQuestion(
         !tags.some((t) => t.toLowerCase() === tag.name.toLowerCase())
     );
 
-    // Add new tags
     const newTagDocuments = [];
     if (tagsToAdd.length > 0) {
       for (const tag of tagsToAdd) {
@@ -189,7 +182,6 @@ export async function editQuestion(
       }
     }
 
-    // Remove tags
     if (tagsToRemove.length > 0) {
       const tagIdsToRemove = tagsToRemove.map((tag: ITagDoc) => tag._id);
 
@@ -212,12 +204,10 @@ export async function editQuestion(
       );
     }
 
-    // Insert new TagQuestion documents
     if (newTagDocuments.length > 0) {
       await TagQuestion.insertMany(newTagDocuments, { session });
     }
 
-    // Save the updated question
     await question.save({ session });
     await session.commitTransaction();
 
@@ -264,7 +254,6 @@ export async function getRecommendedQuestions({
   skip,
   limit,
 }: RecommendationParams) {
-  // Get user's recent interactions
   const interactions = await Interaction.find({
     user: new Types.ObjectId(userId),
     actionType: "question",
@@ -276,25 +265,19 @@ export async function getRecommendedQuestions({
 
   const interactedQuestionIds = interactions.map((i) => i.actionId);
 
-  // Get tags from interacted questions
   const interactedQuestions = await Question.find({
     _id: { $in: interactedQuestionIds },
   }).select("tags");
 
-  // Get unique tags
   const allTags = interactedQuestions.flatMap((q) =>
     q.tags.map((tag: Types.ObjectId) => tag.toString())
   );
 
-  // Remove duplicates
   const uniqueTagIds = [...new Set(allTags)];
 
   const recommendedQuery: FilterQuery<typeof Question> = {
-    // exclude interacted questions
     _id: { $nin: interactedQuestionIds },
-    // exclude the user's own questions
     author: { $ne: new Types.ObjectId(userId) },
-    // include questions with any of the unique tags
     tags: { $in: uniqueTagIds.map((id) => new Types.ObjectId(id)) },
   };
 
@@ -310,7 +293,7 @@ export async function getRecommendedQuestions({
   const questions = await Question.find(recommendedQuery)
     .populate("tags", "name")
     .populate("author", "name image")
-    .sort({ upvotes: -1, views: -1 }) // prioritizing engagement
+    .sort({ upvotes: -1, views: -1 })
     .skip(skip)
     .limit(limit)
     .lean();
@@ -345,7 +328,6 @@ export async function getQuestions(params: PaginatedSearchParams): Promise<
   let sortCriteria = {};
 
   try {
-    // Recommendations
     if (filter === "recommended") {
       const session = await auth();
       const userId = session?.user?.id;
@@ -364,7 +346,6 @@ export async function getQuestions(params: PaginatedSearchParams): Promise<
       return { success: true, data: recommended };
     }
 
-    // Search
     if (query) {
       filterQuery.$or = [
         { title: { $regex: query, $options: "i" } },
@@ -372,7 +353,6 @@ export async function getQuestions(params: PaginatedSearchParams): Promise<
       ];
     }
 
-    // Filters
     switch (filter) {
       case "newest":
         sortCriteria = { createdAt: -1 };
@@ -522,7 +502,6 @@ export async function deleteQuestion(
 
     await Question.findByIdAndDelete(questionId).session(session);
 
-    // log the interaction
     after(async () => {
       await createInteraction({
         action: "delete",

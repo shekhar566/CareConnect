@@ -55,7 +55,6 @@ export async function createAnswer(
     question.answers += 1;
     await question.save({ session });
 
-    // log the interaction
     after(async () => {
       await createInteraction({
         action: "post",
@@ -175,7 +174,6 @@ export async function deleteAnswer(
 
     await Answer.findByIdAndDelete(answerId);
 
-    // log the interaction
     after(async () => {
       await createInteraction({
         action: "delete",

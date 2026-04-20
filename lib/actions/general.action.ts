@@ -35,7 +35,6 @@ export async function globalSearch(params: GlobalSearchParams) {
 
     const SearchableTypes = ["question", "answer", "user", "tag"];
     if (!typeLower || !SearchableTypes.includes(typeLower)) {
-      // If no type is specified, search in all models
       for (const { model, searchField, type } of modelsAndTypes) {
         const queryResults = await model
           .find({ [searchField]: regexQuery })
@@ -53,7 +52,6 @@ export async function globalSearch(params: GlobalSearchParams) {
         );
       }
     } else {
-      // Search in the specified model type
       const modelInfo = modelsAndTypes.find((item) => item.type === type);
 
       if (!modelInfo) {
